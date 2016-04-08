@@ -46,5 +46,17 @@ Network Trash Folder
 Temporary Items
 .apdisk
 application/.project
-precious-webapp/.classpath
+application/.classpath
+application/.settings
 .project
+.classpath
+.settings
+application/target
+precious/target
+precious/.classpath
+precious/.settings
+precious/.project
+precious-webapp/target
+precious-webapp/.classpath
+precious-webapp/.settings
+precious-webapp/.project
