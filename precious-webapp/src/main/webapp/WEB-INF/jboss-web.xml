@@ -1,0 +1,4 @@
+<jboss-web>
+	  <context-root>/</context-root>
+	  <virtual-host>${precious.website.jbossweb.virtual_host}</virtual-host> 
+</jboss-web>
