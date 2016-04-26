@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -11,37 +12,37 @@
     <packaging>war</packaging>
     <version>1.0.7-SNAPSHOT</version>
     <name>Chsi community'precious war</name>
-    
-    <!-- 代码格式校验插件 -->
-    <reporting>  
-      <plugins>
-            <plugin>  
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>  
-              <configuration>
-                  <aggregate>true</aggregate>
-                  <charset>UTF-8</charset>
-                  <encoding>UTF-8</encoding>
-                  <docencoding>UTF-8</docencoding>
-              </configuration>
-              <version>2.4</version>  
-          </plugin>
-          <plugin>  
-              <groupId>org.apache.maven.plugins</groupId>
-              <configuration>
-                  <configLocation>config/maven_checks.xml</configLocation>
-              </configuration>
-              <artifactId>maven-checkstyle-plugin</artifactId>  
-              <version>2.9.1</version>  
-          </plugin>  
 
-          <plugin>  
-              <groupId>org.apache.maven.plugins</groupId>  
-              <artifactId>maven-jxr-plugin</artifactId>  
-              <version>2.3</version>  
-          </plugin>  
-      </plugins>  
-  </reporting>
+    <!-- 代码格式校验插件 -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                </configuration>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <configuration>
+                    <configLocation>config/maven_checks.xml</configLocation>
+                </configuration>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.9.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <dependencies>
         <dependency>
@@ -263,6 +264,10 @@
                     <groupId>commons-lang</groupId>
                     <artifactId>commons-lang</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>poi</groupId>
+                    <artifactId>poi</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -340,22 +345,34 @@
             <type>jar</type>
         </dependency>
         <dependency>
-          <groupId>org.owasp.antisamy</groupId>
-          <artifactId>antisamy</artifactId>
-          <version>1.5.2</version>
-          <exclusions>
-              <exclusion>
-                  <groupId>xml-apis</groupId>
-                  <artifactId>xml-apis</artifactId>
-              </exclusion>
-          </exclusions>
+            <groupId>org.owasp.antisamy</groupId>
+            <artifactId>antisamy</artifactId>
+            <version>1.5.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-         <groupId>ognl</groupId>
-         <artifactId>ognl</artifactId>
-         <type>jar</type>
-         <version>${ognl.ognl.version}</version>
-      </dependency>
+            <groupId>ognl</groupId>
+            <artifactId>ognl</artifactId>
+            <type>jar</type>
+            <version>${ognl.ognl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.12</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -384,9 +401,6 @@
                             <filtering>true</filtering>
                         </resource>
                     </webResources>
-                    <!--
-                        <warSourceExcludes>WEB-INF/classes/LICENSE.txt</warSourceExcludes>
-                    -->
                 </configuration>
             </plugin>
             <plugin>
@@ -396,9 +410,6 @@
                         <phase>compile</phase>
                         <configuration>
                             <tasks>
-                                <!--
-                                    <copy todir="target/test-classes/" preservelastmodified="true" flatten="false"> <fileset dir="src/main/webapp/WEB-INF/classes/"> <include name="**/*-validation.xml" /> <include name="*.xml" /> <include name="*.properties" /> </fileset> </copy>
-                                -->
                             </tasks>
                         </configuration>
                         <goals>
