@@ -112,9 +112,16 @@ public class ZzsgZyfbCheckExcelParse {
                 continue;
             }
             
+            int indexTmp = 2;
             for ( int j = 0; j < cellInfo.getZyCodeList().size(); j++ ) {
                 String cellValue = cellInfo.getZyCodeList().get(j);
-                HSSFCell cell = row.createCell(3 + j);
+                HSSFCell cell = row.createCell(++indexTmp);
+                cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                cell.setCellValue(cellValue);
+            }
+            for ( int f=0; f < cellInfo.getZyNameList().size(); f++ ) {
+                String cellValue = cellInfo.getZyNameList().get(f);
+                HSSFCell cell = row.createCell(++indexTmp);
                 cell.setCellType(HSSFCell.CELL_TYPE_STRING);
                 cell.setCellValue(cellValue);
             }
@@ -161,7 +168,18 @@ public class ZzsgZyfbCheckExcelParse {
             checkInfo = new ZzsgZyCheckInfo();
             checkInfo.setDlName(dlName);
             checkInfo.setZyName(zkZyStr);
-            checkInfo.setZyCodeList(getZyCodesByName(zkZyStr, isZk));
+            List<String> zyCodeList = getZyCodesByName(zkZyStr, isZk);
+            checkInfo.setZyCodeList(zyCodeList);
+            List<String> zyNameLikes = new ArrayList<String>();
+            if ( null != zyCodeList && !zyCodeList.isEmpty() ) {
+                for ( String zyCode : zyCodeList ) {
+                    List<String> tmpList = this.getZyNamesByZyCode(zyCode, zkZyStr, isZk);
+                    if ( null != tmpList && !tmpList.isEmpty() ) {
+                        zyNameLikes.addAll(tmpList);
+                    }
+                }
+            }
+            checkInfo.setZyNameList(zyNameLikes);
             checkInfo.setCc(cc);
             list.add(checkInfo);
         }
@@ -248,6 +266,37 @@ public class ZzsgZyfbCheckExcelParse {
         return null;
     }
     
+    private List<String> getZyNamesByZyCode(String zyCode, String zyName, boolean isZk) {
+        Connection conn = getConnection();
+        if ( null == conn ) {
+            System.out.println("获取数据库连接失败！");
+            return null;
+        }
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "select distinct zymc from dic_zy d where zydm = ? and cc ='" + (isZk ? "专科" : "本科") + "'";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, zyCode);
+            rs = ps.executeQuery();
+            List<String> zydmList = new ArrayList<String>();
+            while( rs.next() ) {
+                String tmpZymc = rs.getString("zymc");
+                if ( !StringUtils.equals(zyName, tmpZymc) ) {
+                    zydmList.add(tmpZymc);
+                }
+            }
+            
+            return zydmList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll(rs, ps, conn);
+        }
+        
+        return null;
+    }
+    
     private static String getValue(HSSFCell hssfCell) {
         if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {
             // 返回布尔类型的值
@@ -267,6 +316,7 @@ public class ZzsgZyfbCheckExcelParse {
         private String zyName;
         private String cc;
         private List<String> zyCodeList;
+        private List<String> zyNameList;
 
         public String getDlName() {
             return dlName;
@@ -306,6 +356,14 @@ public class ZzsgZyfbCheckExcelParse {
 
         public void setZyCodeList(List<String> zyCodeList) {
             this.zyCodeList = zyCodeList;
+        }
+
+        public List<String> getZyNameList() {
+            return zyNameList;
+        }
+
+        public void setZyNameList(List<String> zyNameList) {
+            this.zyNameList = zyNameList;
         }
     }
 }
