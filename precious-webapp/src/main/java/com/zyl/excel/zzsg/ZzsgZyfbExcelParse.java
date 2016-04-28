@@ -30,6 +30,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 public class ZzsgZyfbExcelParse {
     private static final String PRE_ZY_CODE = "ZYDM-";
     private static int currentCode = 0;
+    private static int zyCount = 0;
+    private static int multiZy = 0;
     private static Map<String, String> provMap = new HashMap<String, String>();
     private static Map<String, List<String>> replaceOldZyMap = new HashMap<String, List<String>>();
     private static Map<String, List<String>> addNewZyMap = new HashMap<String, List<String>>();
@@ -81,6 +83,9 @@ public class ZzsgZyfbExcelParse {
             for ( Entry<String, ZyInfo> entry : zyInfoMap.entrySet() ) {
                 zyfbList.add(entry.getValue());
             }
+            System.out.println(currentCode);
+            System.out.println(zyCount);
+            System.out.println(multiZy);
             writeExcel(zyfbList);
         } catch ( FileNotFoundException e ) {
             e.printStackTrace();
@@ -155,6 +160,9 @@ public class ZzsgZyfbExcelParse {
                 }
                 zyInfo.setZyfbList(ssfbTmpList);
                 zyInfoMap.put(zyName, zyInfo);
+            } else {
+                multiZy++;
+                System.out.println("重复的专业：" + zyName);
             }
             
             for ( int m=0; m<ssfbList.size(); m++ ) {
@@ -180,6 +188,8 @@ public class ZzsgZyfbExcelParse {
     }
     
     private List<String> getZyNameList(String zkZy, String bkZy) {
+        zkZy = StringUtils.replace(zkZy, " ", "");
+        bkZy = StringUtils.replace(bkZy, " ", "");
         Vector<String> vector = new Vector<String>();
         if ( StringUtils.isNotBlank(zkZy) ) {
             zkZy = StringUtils.trim(StringUtils.replace(zkZy, "；", "、"));
@@ -208,7 +218,8 @@ public class ZzsgZyfbExcelParse {
                 zyNameVector.addAll(addNewZyMap.get(zyName));
             }
         }
-        return zyNameVector.subList(0, vector.size());
+        zyCount += zyNameVector.size();
+        return zyNameVector.subList(0, zyNameVector.size());
     }
 
     private static String getValue(HSSFCell hssfCell) {
@@ -286,5 +297,31 @@ public class ZzsgZyfbExcelParse {
         provMap.put("青海", "ss63");
         provMap.put("宁夏", "ss64");
         provMap.put("新疆", "ss65");
+        
+        addNewZyMap.put("计算机软件技术", Arrays.asList(new String[]{"计算机软件与理论","计算机软件"}));
+        addNewZyMap.put("泰国语", Arrays.asList(new String[]{"应用泰国语"}));
+        addNewZyMap.put("光通信技术", Arrays.asList(new String[]{"光纤通信"}));
+        addNewZyMap.put("电机与电气", Arrays.asList(new String[]{"电机电器智能化","电机与电器"}));
+        addNewZyMap.put("电子仪表与维修", Arrays.asList(new String[]{"电子仪器仪表与维修"}));
+        addNewZyMap.put("城市运输与管理", Arrays.asList(new String[]{"城市轨道交通运营管理"}));
+        addNewZyMap.put("软件工程技术", Arrays.asList(new String[]{"软件工程"}));
+        addNewZyMap.put("韩语", Arrays.asList(new String[]{"应用韩语"}));
+        addNewZyMap.put("程控交控技术", Arrays.asList(new String[]{"程控交换技术"}));
+        addNewZyMap.put("汽车运用与技术", Arrays.asList(new String[]{"汽车运用技术","汽车运用与维修"}));
+        addNewZyMap.put("计算机图像制作", Arrays.asList(new String[]{"图形图像制作"}));
+        addNewZyMap.put("导弹修理", Arrays.asList(new String[]{"导弹维修"}));
+        addNewZyMap.put("计算机网络安全管理", Arrays.asList(new String[]{"计算机网络安全与管理"}));
+        addNewZyMap.put("电气设备与维护", Arrays.asList(new String[]{"电气设备应用与维护"}));
+        addNewZyMap.put("电子仪器仪表与修理", Arrays.asList(new String[]{"电子仪器仪表与维修"}));
+        addNewZyMap.put("机械制造及自动化", Arrays.asList(new String[]{"机械制造与自动化","航空机械制造与自动化"}));
+        addNewZyMap.put("大气观测技术", Arrays.asList(new String[]{"大气探测技术"}));
+        addNewZyMap.put("电气自动化", Arrays.asList(new String[]{"电气自动化技术","电气工程及其自动化","电气工程与自动化"}));
+        addNewZyMap.put("烹饪工艺及营养", Arrays.asList(new String[]{"烹饪工艺与营养"}));
+        addNewZyMap.put("电子应用技术", Arrays.asList(new String[]{"应用电子技术"}));
+        addNewZyMap.put("给水排水工程技术", Arrays.asList(new String[]{"给水排水工程"}));
+        addNewZyMap.put("电子仪器表与维修", Arrays.asList(new String[]{"电子仪器仪表与维修"}));
+        addNewZyMap.put("电子技术", Arrays.asList(new String[]{"应用电子技术"}));
+        addNewZyMap.put("供热通风与空调技术", Arrays.asList(new String[]{"供热通风与空调工程技术"}));
+        addNewZyMap.put("热能与动力工程", Arrays.asList(new String[]{"能源与动力工程"}));
     }
 }
