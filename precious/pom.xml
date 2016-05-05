@@ -54,22 +54,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.chsi</groupId>
-            <artifactId>chsi-framework</artifactId>
-            <version>${chsi.framework.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>chsi-version</artifactId>
-            <version>${chsi.framework.version.version}</version>
         </dependency>
 
         <dependency>
