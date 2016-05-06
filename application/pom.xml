@@ -2,15 +2,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.chsi</groupId>
-        <artifactId>chsi_package_precious</artifactId>
+        <groupId>com.zyl</groupId>
+        <artifactId>zyl_package_precious</artifactId>
         <version>1.0.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>chsi-precious-ear</artifactId>
+    <artifactId>zyl-precious-ear</artifactId>
     <packaging>ear</packaging>
     <version>1.0.7-SNAPSHOT</version>
-    <name>Chsi community's precious ear</name>
+    <name>Zyl community's precious ear</name>
 
     <dependencies>
         <dependency>
@@ -60,12 +60,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jasig.cas</groupId>
-            <artifactId>cas-client-core</artifactId>
-            <version>${cas-client.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
@@ -109,7 +103,7 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>chsi-precious-webapp</artifactId>
+            <artifactId>zyl-precious-webapp</artifactId>
             <version>${pom.version}</version>
             <type>war</type>
             <exclusions>
@@ -124,8 +118,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.chsi</groupId>
-            <artifactId>chsi-precious</artifactId>
+            <groupId>com.zyl</groupId>
+            <artifactId>zyl-precious</artifactId>
             <version>${pom.version}</version>
             <type>jar</type>
         </dependency>
@@ -219,15 +213,16 @@
                     <jboss>
                         <version>4</version>
                         <unauthenticated-principal>guest</unauthenticated-principal>
-                        <loader-repository>my.package:loader=chsi-precious.ear</loader-repository>
-                        <jmx-name>my.package:module=chsi-precious.ear</jmx-name>
+                        <loader-repository>my.package:loader=zyl-precious.ear</loader-repository>
+                        <jmx-name>my.package:module=zyl-precious.ear</jmx-name>
                     </jboss>
 
                     <modules>
                         <webModule>
                             <groupId>${pom.groupId}</groupId>
-                            <artifactId>chsi-precious-webapp</artifactId>
+                            <artifactId>zyl-precious-webapp</artifactId>
                             <contextRoot>/</contextRoot>
+                            <bundleFileName>precious.war</bundleFileName>
                         </webModule>
                     </modules>
                 </configuration>
