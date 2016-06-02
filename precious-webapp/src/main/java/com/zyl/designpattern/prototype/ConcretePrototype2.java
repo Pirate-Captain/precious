@@ -17,8 +17,12 @@ public class ConcretePrototype2 extends Prototype {
     @Override
     public Object clone() {
         ConcretePrototype2 cloneObj = (ConcretePrototype2)super.clone();
-        cloneObj.setBean((PrototypeBean)this.bean.clone());
-        cloneObj.setCardNoList((ArrayList<String>)this.cardNoList.clone());
+        if ( null != bean ) {
+            cloneObj.setBean((PrototypeBean)this.bean.clone());
+        }
+        if ( null != cardNoList ) {
+            cloneObj.setCardNoList((ArrayList<String>)this.cardNoList.clone());
+        }
         return cloneObj;
     }
 
