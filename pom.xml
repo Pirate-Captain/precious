@@ -203,6 +203,9 @@
         <junit.version>4.4</junit.version>
         <org.org.slf4j.version>1.5.5</org.org.slf4j.version>
         <dom4j.version>1.6.1</dom4j.version>
+        <commons-io.version>2.4</commons-io.version>
+        <hadoop.version>2.6.4</hadoop.version>
+        <log4j.version>1.2.12</log4j.version>
     </properties>
 
     <profiles>
