@@ -21,7 +21,6 @@ import org.dom4j.io.SAXReader;
  * @version $Id$
  */
 public class ScanStruts2DMI {
-    private static final long serialVersionUID = -4369193313443159789L;
     private JTextArea jTextArea;
     private JLabel tipsLable;
     
@@ -32,11 +31,6 @@ public class ScanStruts2DMI {
     
     public void scanDmi(boolean needDeepFind, String path) {
         File file = new File(path);
-        if ( null == file ) {
-            printTips("对应的路径：" + path + "，不存在！");
-            return;
-        }
-        
         scanEveryFile(needDeepFind, file);
     }
     
@@ -70,7 +64,7 @@ public class ScanStruts2DMI {
         }
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     private void scanFile(File file) {
         try {
             SAXReader reader = new SAXReader();
@@ -93,7 +87,7 @@ public class ScanStruts2DMI {
         }
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private void scanEveryPackage(File file, Element packageElement) {
         List actionList = packageElement.elements("action");
         if ( null == actionList || actionList.isEmpty() ) {
