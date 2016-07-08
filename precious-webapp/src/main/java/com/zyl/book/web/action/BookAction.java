@@ -11,9 +11,11 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import com.codahale.metrics.MetricRegistry;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.zyl.book.model.BookModel;
+import com.zyl.metrics.util.MetricsUtils;
 import com.zyl.service.BookService;
 
 /**
@@ -31,6 +33,10 @@ public class BookAction extends ActionSupport implements ModelDriven<Object> {
     private BookService service = new BookService();
     
     public HttpHeaders index() {
+        MetricRegistry registry = MetricsUtils.getMetricRegistry();
+        registry.counter(MetricRegistry.name(BookAction.class, "index", "counter")).inc();
+        registry.meter(MetricRegistry.name(BookAction.class, "index", "meter")).mark();
+        
         bookList = service.getAllBooks();
         return new DefaultHttpHeaders("index").disableCaching();
     }

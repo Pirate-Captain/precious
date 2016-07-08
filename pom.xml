@@ -21,9 +21,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
+                    <source>1.6</source>
                     <encoding>UTF-8</encoding>
-                    <target>1.7</target>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -81,12 +81,6 @@
     </reporting>
 
     <dependencies>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.3.161</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -152,23 +146,16 @@
             <id>central</id>
             <name>Maven Repository Switchboard</name>
             <layout>default</layout>
-            <url>http://repo.maven.org/maven2</url>
+            <url>http://repo1.maven.org/maven2</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        
-        <repository>
-          <id>central maven</id>
-          <url>http://central.maven.org/maven2</url>
-        </repository>
-        
         <repository>
             <id>ibiblio</id>
             <name>Ibiblio Repository</name>
             <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
         </repository>
-        
         <repository>
             <id>maven2-repository.dev.java.net</id>
             <name>Java.net Repository for Maven</name>
@@ -192,6 +179,9 @@
         <hibernate.version>4.1.7.Final</hibernate.version>
         <commons-digester.version>1.5</commons-digester.version>
         <commons-logging.version>1.1.1</commons-logging.version>
+        <commons-lang.version>2.4</commons-lang.version>
+        <commons-pool.version>1.3</commons-pool.version>
+        <commons-io.version>2.0.1</commons-io.version>
         <struts2.core.version>2.3.28.1</struts2.core.version>
         <struts2.spring.plugin.version>2.3.28.1</struts2.spring.plugin.version>
         <struts2.tiles.plugin.version>2.3.28.1</struts2.tiles.plugin.version>
@@ -206,6 +196,13 @@
         <commons-io.version>2.4</commons-io.version>
         <hadoop.version>2.6.4</hadoop.version>
         <log4j.version>1.2.12</log4j.version>
+        <metrics.version>3.1.0</metrics.version>
+        <aspectjrt.version>1.6.1</aspectjrt.version>
+        <tiles-jsp.version>2.0.6</tiles-jsp.version>
+        <servlet.version>2.4</servlet.version>
+        <commons-fileupload.version>1.2.2</commons-fileupload.version>
+        <poi.version>3.12</poi.version>
+        <json-lib.version>2.4</json-lib.version>
     </properties>
 
     <profiles>
