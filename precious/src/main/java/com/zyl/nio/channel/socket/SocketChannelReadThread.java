@@ -38,11 +38,10 @@ public class SocketChannelReadThread implements Runnable {
                         
                         StringBuffer messageBuffer = new StringBuffer();
                         
-                        while ( socketChannel.read(byteBuffer) != -1 ) {
-                            byteBuffer.flip();
-                            messageBuffer.append(Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString());
-                            byteBuffer.clear();
-                        }
+                        socketChannel.read(byteBuffer);
+                        byteBuffer.flip();
+                        messageBuffer.append(Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString());
+                        byteBuffer.clear();
                         
                         System.out.println("Receive data:" + messageBuffer.toString());
                         selectionKey.interestOps(SelectionKey.OP_READ);

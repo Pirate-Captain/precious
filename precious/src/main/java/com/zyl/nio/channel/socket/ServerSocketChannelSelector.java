@@ -24,11 +24,10 @@ public class ServerSocketChannelSelector {
         if ( !socketChannel.isOpen() || !socketChannel.isConnected() ) {
             return;
         }
-        while ( socketChannel.read(byteBuffer) != -1 ) {
-            byteBuffer.flip();
-            messageBuffer.append(Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString());
-            byteBuffer.clear();
-        }
+        socketChannel.read(byteBuffer);
+        byteBuffer.flip();
+        messageBuffer.append(Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString());
+        byteBuffer.clear();
         System.out.println("Receive the message："+messageBuffer.toString()+" from " + socketChannel.socket().getInetAddress().getHostAddress());
         String replyMessage = "已收到您的信息：" + messageBuffer.toString();
         socketChannel.write(ByteBuffer.wrap(replyMessage.getBytes("UTF-8")));

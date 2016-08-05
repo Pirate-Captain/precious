@@ -203,6 +203,8 @@
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <poi.version>3.12</poi.version>
         <json-lib.version>2.4</json-lib.version>
+        <quartz.version>2.1.5</quartz.version>
+        <log4j.version>1.2.12</log4j.version>
     </properties>
 
     <profiles>

@@ -1,12 +1,13 @@
 package com.zyl.nio.channel.socket;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Scanner;
 
 
 public class SocketChannelClient {
@@ -50,8 +51,8 @@ public class SocketChannelClient {
                 try {
                     client.sendMessage("你好!Nio!醉里挑灯看剑,梦回吹角连营");
                     while ( mFlag ) {
-                        Scanner scanner = new Scanner(System.in);
-                        String message = scanner.next();
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+                        String message = bufferedReader.readLine();
                         client.sendMessage(message);
                     }
                 } catch ( IOException e ) {
