@@ -39,6 +39,7 @@ public class HadoopFileSystemWriteTest {
         while ( (length = fis.read(buffer)) != -1 ) {
             fos.write(buffer, 0, length);
         }
+        fos.hflush();
         fis.close();
         fos.close();
     }
