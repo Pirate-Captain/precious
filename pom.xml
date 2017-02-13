@@ -206,6 +206,7 @@
         <quartz.version>2.1.5</quartz.version>
         <log4j.version>1.2.12</log4j.version>
         <hbase.version>1.2.1</hbase.version>
+        <redis.clients.version>2.6.0</redis.clients.version>
     </properties>
 
     <profiles>

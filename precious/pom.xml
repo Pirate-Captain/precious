@@ -137,6 +137,13 @@
             <version>${hbase.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${redis.clients.version}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
