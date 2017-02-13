@@ -57,6 +57,13 @@ class Game implements Runnable {
             e.printStackTrace();
         }
         go();
+        try {
+            Thread.sleep(1000);
+            go();
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
+        
     }
     
     public void addShooter(Shooter shooter) {
