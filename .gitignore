@@ -60,3 +60,8 @@ precious-webapp/target
 precious-webapp/.classpath
 precious-webapp/.settings
 precious-webapp/.project
+zyl_package_precious.iml
+.idea
+application/zyl-precious-ear.iml
+precious/zyl-precious.iml
+precious-webapp/zyl-precious-webapp.iml
