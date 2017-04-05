@@ -14,7 +14,7 @@ public class HadoopUrlReadFile {
     public static void main(String[] args) {
         InputStream ins = null;
         try {
-            ins = new URL("hdfs://node:9000/input.txt").openStream();
+            ins = new URL("hdfs://node1:9000/usr/magic-lion/input.txt").openStream();
             IOUtils.copyBytes(ins, System.out, 1024, false);
         } catch ( IOException e ) {
             e.printStackTrace();
