@@ -42,6 +42,7 @@ public class ZzsgZyfbCheckExcelParse {
     
     public void parse() {
         HSSFWorkbook book = null;
+        Connection connection = getConnection();
         try {
             book = new HSSFWorkbook(new FileInputStream("e:/zzsgzyfb.xls"));
             HSSFSheet sheet = book.getSheetAt(0);
@@ -51,7 +52,7 @@ public class ZzsgZyfbCheckExcelParse {
                 String dlName = StringUtils.trim(getValue(sheet.getRow(i).getCell(0)));
                 String zkZy = StringUtils.trim(getValue(sheet.getRow(i).getCell(1)));
                 String bkZy = StringUtils.trim(getValue(sheet.getRow(i).getCell(2)));
-                addToCheckMap(dlName, zkZy, bkZy, checkMap);
+                addToCheckMap(connection, dlName, zkZy, bkZy, checkMap);
             }
             List<ZzsgZyCheckInfo> checkInfoList = new ArrayList<ZzsgZyCheckInfo>();
             for ( Entry<String, List<ZzsgZyCheckInfo>> entry : checkMap.entrySet() ) {
@@ -76,6 +77,13 @@ public class ZzsgZyfbCheckExcelParse {
                 book.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            if ( null != connection ) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -142,12 +150,12 @@ public class ZzsgZyfbCheckExcelParse {
         }
     }
     
-    private void addToCheckMap(String dlName, String zkZy, String bkZy, Map<String, List<ZzsgZyCheckInfo>> checkMap) {
-        parseZy(dlName, zkZy, true,checkMap);
-        parseZy(dlName, bkZy, false,checkMap);
+    private void addToCheckMap(Connection connection, String dlName, String zkZy, String bkZy, Map<String, List<ZzsgZyCheckInfo>> checkMap) {
+        parseZy(connection, dlName, zkZy, true,checkMap);
+        parseZy(connection, dlName, bkZy, false,checkMap);
     }
     
-    private void parseZy(String dlName, String zyInfo, boolean isZk, Map<String, List<ZzsgZyCheckInfo>> checkMap) {
+    private void parseZy(Connection connection, String dlName, String zyInfo, boolean isZk, Map<String, List<ZzsgZyCheckInfo>> checkMap) {
         if ( StringUtils.isBlank(zyInfo) ) {
             return;
         }
@@ -168,12 +176,12 @@ public class ZzsgZyfbCheckExcelParse {
             checkInfo = new ZzsgZyCheckInfo();
             checkInfo.setDlName(dlName);
             checkInfo.setZyName(zkZyStr);
-            List<String> zyCodeList = getZyCodesByName(zkZyStr, isZk);
+            List<String> zyCodeList = getZyCodesByName(connection, zkZyStr, isZk);
             checkInfo.setZyCodeList(zyCodeList);
             List<String> zyNameLikes = new ArrayList<String>();
             if ( null != zyCodeList && !zyCodeList.isEmpty() ) {
                 for ( String zyCode : zyCodeList ) {
-                    List<String> tmpList = this.getZyNamesByZyCode(zyCode, zkZyStr, isZk);
+                    List<String> tmpList = this.getZyNamesByZyCode(connection, zyCode, zkZyStr, isZk);
                     if ( null != tmpList && !tmpList.isEmpty() ) {
                         zyNameLikes.addAll(tmpList);
                     }
@@ -238,17 +246,13 @@ public class ZzsgZyfbCheckExcelParse {
         }
     }
     
-    private List<String> getZyCodesByName(String zyName, boolean isZk) {
-        Connection conn = getConnection();
-        if ( null == conn ) {
-            System.out.println("获取数据库连接失败！");
-            return null;
-        }
+    private List<String> getZyCodesByName(Connection connection, String zyName, boolean isZk) {
+        
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String sql = "select distinct zydm from dic_zy d where zymc = ? and cc ='" + (isZk ? "专科" : "本科") + "'";
-            ps = conn.prepareStatement(sql);
+            String sql = "select distinct zydm from dic.dic_zy d where zymc = ? and cc ='" + (isZk ? "专科" : "本科") + "'";
+            ps = connection.prepareStatement(sql);
             ps.setString(1, zyName);
             rs = ps.executeQuery();
             List<String> zydmList = new ArrayList<String>();
@@ -260,23 +264,18 @@ public class ZzsgZyfbCheckExcelParse {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeAll(rs, ps, conn);
+            closeAll(rs, ps, null);
         }
         
         return null;
     }
     
-    private List<String> getZyNamesByZyCode(String zyCode, String zyName, boolean isZk) {
-        Connection conn = getConnection();
-        if ( null == conn ) {
-            System.out.println("获取数据库连接失败！");
-            return null;
-        }
+    private List<String> getZyNamesByZyCode(Connection connection, String zyCode, String zyName, boolean isZk) {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String sql = "select distinct zymc from dic_zy d where zydm = ? and cc ='" + (isZk ? "专科" : "本科") + "'";
-            ps = conn.prepareStatement(sql);
+            String sql = "select distinct zymc from dic.dic_zy d where zydm = ? and cc ='" + (isZk ? "专科" : "本科") + "'";
+            ps = connection.prepareStatement(sql);
             ps.setString(1, zyCode);
             rs = ps.executeQuery();
             List<String> zydmList = new ArrayList<String>();
@@ -291,7 +290,7 @@ public class ZzsgZyfbCheckExcelParse {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeAll(rs, ps, conn);
+            closeAll(rs, ps, null);
         }
         
         return null;
