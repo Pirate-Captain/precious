@@ -216,7 +216,8 @@
         <log4j.version>1.2.12</log4j.version>
         <hbase.version>1.2.1</hbase.version>
         <redis.clients.version>2.6.0</redis.clients.version>
-        <oracle.version>10.2.0.1.0</oracle.version>
+        <oracle.version>10.2.0.3.0</oracle.version>
+        <xstream.version>1.4.9</xstream.version>
     </properties>
 
     <profiles>
