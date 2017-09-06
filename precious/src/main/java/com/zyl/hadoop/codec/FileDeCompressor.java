@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
+import com.zyl.hadoop.file.HadoopConfigUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -24,8 +25,13 @@ public class FileDeCompressor {
     public static void main(String[] args) throws IOException {
         String uri = args[0];
         Configuration configuration = new Configuration();
-        FileSystem fs = FileSystem.get(URI.create(uri), configuration);
-        
+        FileSystem fs = null;
+        try {
+            fs = FileSystem.get(URI.create(uri), configuration, HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
+
         Path inputPath = new Path(uri);
         CompressionCodecFactory factory = new CompressionCodecFactory(configuration);
         CompressionCodec codec = factory.getCodec(inputPath);
