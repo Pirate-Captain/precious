@@ -20,8 +20,8 @@ import org.apache.hadoop.fs.Path;
  * @version $Id$
  */
 public class HadoopFileSystemWriteBatchTest {
-    private static String localFileDic = "E:\\logs";
-    private static String remoteFileDic = "hdfs://node1:9000/usr/magic-lion";
+    private static String localFileDic = "D:\\logs\\securcrt\\192.168.41.129\\2017";
+    private static String remoteFileDic = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop";
     
     public static void main(String[] args) throws IOException {
         writeFile(new File(localFileDic));
@@ -46,7 +46,12 @@ public class HadoopFileSystemWriteBatchTest {
     private static void writeRemoteFile(File file, String remoteFileName) throws IOException {
         System.out.println("---------------------Write the " + remoteFileName + " begin--------------");
         Configuration configuration = new Configuration();
-        FileSystem fileSystem = FileSystem.get(URI.create(remoteFileName), configuration);
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(remoteFileName), configuration, HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+
+        }
         OutputStream fos = fileSystem.create(new Path(remoteFileName));
         FileInputStream fis = new FileInputStream(file);
         IOUtils.copy(fis, fos);

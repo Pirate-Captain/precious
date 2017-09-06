@@ -20,7 +20,7 @@ import org.apache.hadoop.fs.Path;
  */
 public class HadoopFileSystemReadTest {
     public static void main(String[] args) throws IOException {
-        String uri = "hdfs://node1:9000/usr/magic-lion/input.txt";
+        String uri = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop/input.txt";
         normalReadFromHDFS(uri);
         seekRead(uri);
     }
@@ -33,7 +33,12 @@ public class HadoopFileSystemReadTest {
     private static void normalReadFromHDFS(String uri) throws IOException {
         System.out.println("-----------------Nomal read from hdfs begin-----------------");
         Configuration configuration = new Configuration();
-        FileSystem fileSystem = FileSystem.get(URI.create(uri), configuration);
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(uri), configuration, HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
         InputStream ins = fileSystem.open(new Path(uri));
         IOUtils.copy(ins, System.out);
         IOUtils.closeQuietly(ins);

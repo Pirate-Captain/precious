@@ -18,7 +18,7 @@ import org.apache.hadoop.fs.PathFilter;
  * @version $Id$
  */
 public class HadoopFileSystemGlobStatusTest {
-    private static String uri = "hdfs://node1:9000/usr/magic-lion/";
+    private static String uri = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop/";
     
     public static void main(String[] args) throws IOException {
 //        matchStar();
@@ -102,21 +102,31 @@ public class HadoopFileSystemGlobStatusTest {
      * 带有正则表达式过滤
      */
     private static void matchWithFilter() throws IOException {
-        globStatus(uri + "*/*/*", new HadoopFileSystemGlobStatusTest().new RegexIncludePatchFilter("05"));
+        globStatus(uri + "*", new HadoopFileSystemGlobStatusTest().new RegexIncludePatchFilter("05"));
     }
     
     private static void globStatus(String path) throws IOException {
         Configuration configuration = new Configuration();
-        FileSystem fileSystem = FileSystem.get(URI.create(uri), configuration);
-        
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(uri), configuration, HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
+
         FileStatus[] fileStatusArr = fileSystem.globStatus(new Path(path));
         HadoopFileStatusShowUtil.showFileStatusArray(fileStatusArr);
     }
     
     private static void globStatus(String path, PathFilter pathFilter) throws IOException {
         Configuration configuration = new Configuration();
-        FileSystem fileSystem = FileSystem.get(URI.create(uri), configuration);
-        
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(uri), configuration, HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
+
         FileStatus[] fileStatusArr = fileSystem.globStatus(new Path(path), pathFilter);
         HadoopFileStatusShowUtil.showFileStatusArray(fileStatusArr);
     }

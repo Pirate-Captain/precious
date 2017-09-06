@@ -16,34 +16,46 @@ import org.apache.hadoop.fs.Path;
  * @version $Id$
  */
 public class HadoopFileStatusTest {
-    private static String url = "hdfs://node1:9000/usr/magic-lion";
+    private static String url = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop";
 
     public static void main(String[] args) throws IOException {
         showFileStatus(url);
         System.out.println("------------------------------------------");
         showFileStatusList(url);
     }
-    
+
     /**
      * 查看单个文件的文件状态
+     *
      * @param uri
      * @throws IOException
      */
     private static void showFileStatus(String uri) throws IOException {
         Path path = new Path(uri);
-        
-        FileSystem fileSystem = FileSystem.get(URI.create(uri), new Configuration());
+
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(uri), new Configuration(), HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
         FileStatus fileStatus = fileSystem.getFileStatus(path);
         HadoopFileStatusShowUtil.showDetailFileStatus(fileStatus);
     }
-    
+
     /**
      * 显示文件列表信息
+     *
      * @param uri
      * @throws IOException
      */
     private static void showFileStatusList(String uri) throws IOException {
-        FileSystem fileSystem = FileSystem.get(URI.create(uri), new Configuration());
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(uri), new Configuration(), HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
         FileStatus[] fileStatusArr = fileSystem.listStatus(new Path(uri));
         if ( null == fileStatusArr || fileStatusArr.length == 0 ) {
             return;

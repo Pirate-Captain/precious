@@ -12,15 +12,21 @@ import org.apache.hadoop.fs.Path;
 
 /**
  * 删除文件
+ *
  * @author zhuyl<a href="mailto:472130873@qq.com">zhu Youliang</a>
  * @version $Id$
  */
 public class HadoopFileSystemDeleteTest {
-    private static String uri = "";
-    
+    private static String uri = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop";
+
     public static void main(String[] args) throws IOException {
         Configuration configuration = new Configuration();
-        FileSystem fileSystem = FileSystem.get(URI.create(uri), configuration);
+        FileSystem fileSystem = null;
+        try {
+            fileSystem = FileSystem.get(URI.create(uri), configuration, HadoopConfigUtil.getConfig("hadoop.user"));
+        } catch ( InterruptedException e ) {
+            e.printStackTrace();
+        }
         boolean recusive = false;
         fileSystem.delete(new Path(uri), recusive);
     }
