@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author zhuyl<a href="mailto:472130873@qq.com">zhu Youliang</a>
  * @version $Id$
  */
 public class HadoopConfigUtil {
