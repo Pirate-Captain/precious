@@ -18,8 +18,8 @@ import java.net.URI;
  * @version $Id$
  */
 public class HadoopFileSystemWriteTest {
-    private static String url = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop/input.txt";
-    private static String localFile = "D:\\logs\\securcrt\\192.168.41.129\\2017\\session-192.168.41.129-2017-09-05.log";
+    private static String url = HadoopConfigUtil.getConfig("fs.defaultFS") + "/usr/hadoop/wordcount.txt";
+    private static String localFile = "E:/wordcount.txt";
     
     public static void main(String[] args) throws IOException {
         Configuration conf = new Configuration();
@@ -39,7 +39,7 @@ public class HadoopFileSystemWriteTest {
             @Override
             public void progress() {
                 fileCount++;
-                System.out.println("总进度" + (fileCount/totalCount)*100 + "%");
+//                System.out.println("总进度" + (fileCount/totalCount)*100 + "%");
             }
         });
         
