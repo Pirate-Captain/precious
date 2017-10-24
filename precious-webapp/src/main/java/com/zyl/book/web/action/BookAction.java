@@ -73,6 +73,7 @@ public class BookAction extends ActionSupport implements ModelDriven<Object> {
         this.model = model;
     }
 
+    @Override
     public Object getModel() {
         return bookList.size() == 0 ? model : bookList;
     }
