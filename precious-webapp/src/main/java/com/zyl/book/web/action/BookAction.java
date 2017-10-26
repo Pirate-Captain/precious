@@ -6,6 +6,7 @@ package com.zyl.book.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -23,7 +24,7 @@ import com.zyl.service.BookService;
  * @version $Id$
  */
 //定义返回 success 时重定向到 book Action
-//@Namespace("/user")
+@Namespace("/user")
 @Results(@Result(name="success" , type="redirectAction" , params = {"actionName" , "book"})) 
 public class BookAction extends ActionSupport implements ModelDriven<Object> {
     private static final long serialVersionUID = -7817670704188234159L;

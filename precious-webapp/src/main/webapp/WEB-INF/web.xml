@@ -30,6 +30,16 @@
         <servlet-name>metrics</servlet-name>
         <url-pattern>/metrics/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>asyncServlet</servlet-name>
+        <servlet-class>com.zyl.longpolling.servlet3.async.AsyncLongPollingServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>asyncServlet</servlet-name>
+        <url-pattern>/asyncsevlt.do</url-pattern>
+    </servlet-mapping>
 
     <filter>
         <filter-name>action2</filter-name>
@@ -42,7 +52,7 @@
 
     <filter-mapping>
         <filter-name>action2</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/user/*</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>

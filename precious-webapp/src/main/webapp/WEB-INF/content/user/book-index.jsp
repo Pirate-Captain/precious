@@ -20,12 +20,12 @@
         <td><s:property value="id"/></td> 
         <td>${name}</td> 
         <td>${price}</td> 
-        <td><a href="/book/${id}/show.json"> 查看 </a> | 
-        <a href="/book/${id}/edit"> 编辑 </a> | 
-        <a href="/book/${id}/deleteConfirm"> 删除 </a></td> 
+        <td><a href="/user/book/${id}/show.json"> 查看 </a> |
+        <a href="/user/book/${id}/edit"> 编辑 </a> |
+        <a href="/user/book/${id}/deleteConfirm"> 删除 </a></td>
     </tr> 
     </s:iterator> 
  </table> 
- <a href="<%=request.getContextPath() %>/book/new"> 创建新图书 </a> 
+ <a href="/user/book/new"> 创建新图书 </a>
  </body> 
  </html>
