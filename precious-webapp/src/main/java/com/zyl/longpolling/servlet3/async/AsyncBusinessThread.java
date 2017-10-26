@@ -30,8 +30,10 @@ public class AsyncBusinessThread implements Runnable {
             resultMap.put("xm", "张三");
             resultMap.put("sex", "male");
             resultMap.put("age", "20");
+
             asyncContext.getResponse().getWriter().write(JSONObject.fromObject(resultMap).toString());
             asyncContext.getResponse().getWriter().flush();
+            asyncContext.complete();
         } catch ( InterruptedException e ) {
             e.printStackTrace();
         } catch ( IOException e ) {
