@@ -33,6 +33,7 @@ public class AsyncBusinessThread implements Runnable {
 
             asyncContext.getResponse().getWriter().write(JSONObject.fromObject(resultMap).toString());
             asyncContext.getResponse().getWriter().flush();
+            asyncContext.getResponse().getWriter().close();
             asyncContext.complete();
         } catch ( InterruptedException e ) {
             e.printStackTrace();
