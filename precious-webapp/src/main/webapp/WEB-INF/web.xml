@@ -45,6 +45,17 @@
         <url-pattern>/user/*</url-pattern>
     </filter-mapping>
 
+    <servlet>
+        <servlet-name>precious</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>precious</servlet-name>
+        <url-pattern>*.ws</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
