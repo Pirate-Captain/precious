@@ -256,6 +256,11 @@
             <artifactId>xstream</artifactId>
             <version>${xstream.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>${javax.websocket-api.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
