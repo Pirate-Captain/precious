@@ -1,8 +1,8 @@
-/**
+/*
  * chsi
  * Created on 2017-09-28
  */
-package com.zyl.levenshteindistance;
+package com.zyl.similarity;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 计算字符串的相似度
  *
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
  * @version $Id$
  */
 public class Levenshteindistance {
@@ -25,12 +25,16 @@ public class Levenshteindistance {
      * @return 相似度
      */
     public static float similarity(String str1, String str2) {
+        long startTime = System.currentTimeMillis();
         if ( StringUtils.isBlank(str1) && StringUtils.isBlank(str2) ) {
             return 1;
         }
         float str1Length = StringUtils.isBlank(str1) ? 0 : str1.length();
         float str2Length = StringUtils.isBlank(str2) ? 0 : str2.length();
-        return 1 - distance(str1, str2) / Math.max(str1Length, str2Length);
+        float result = 1 - distance(str1, str2) / Math.max(str1Length, str2Length);
+        long endTime = System.currentTimeMillis();
+        System.out.println("levenshteindistance比对耗时：" + (endTime - startTime));
+        return result;
     }
 
     private static int distance(String str1, String str2) {
@@ -50,7 +54,7 @@ public class Levenshteindistance {
             d[0][index] = index;
         }
 
-        int tmp = 0;
+        int tmp;
         for ( int i = 1; i <= str1Length; i++ ) {
             char char1 = str1.charAt(i - 1);
             for ( int j = 1; j <= str2Length; j++ ) {

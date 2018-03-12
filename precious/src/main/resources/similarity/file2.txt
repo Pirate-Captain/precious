@@ -1,0 +1,362 @@
+Carmack的sqrt计算函数在批量计量时的耗时比系统库函数还要少，优异的性能的根本原因就是那个令无数人膜拜的魔数0x5F3759DF。
+最近由于工作项目，需要判断两个txt文本是否相似，于是开始在网上找资料研究，因为在程序中会把文本转换成String再做比较，所以最开始找到了这篇关于 距离编辑算法 Blog写的非常好，受益匪浅。
+
+       于是我决定把它用到项目中，来判断两个文本的相似度。但后来实际操作发现有一些问题：直接说就是查询一本书中的相似章节花了我7、8分钟；这是我不能接受……
+
+       于是停下来仔细分析发现，这种算法在此项目中不是特别适用，由于要判断一本书中是否有相同章节，所以每两个章节之间都要比较，若一本书书有x章的话，这里需对比x(x-1)/2次；而此算法采用矩阵的方式，计算两个字符串之间的变化步骤，会遍历两个文本中的每一个字符两两比较，可以推断出时间复杂度至少为 document1.length × document2.length，我所比较的章节字数平均在几千～一万字；这样计算实在要了老命。
+
+       想到Lucene中的评分机制，也是算一个相似度的问题，不过它采用的是计算向量间的夹角（余弦公式），在google黑板报中的：数学之美（余弦定理和新闻分类） 也有说明，可以通过余弦定理来判断相似度；于是决定自己动手试试。
+
+       首相选择向量的模型：在以字为向量还是以词为向量的问题上，纠结了一会；后来还是觉得用字，虽然词更为准确，但分词却需要增加额外的复杂度，并且此项目要求速度，准确率可以放低，于是还是选择字为向量。
+
+       然后每个字在章节中出现的次数，便是以此字向量的值。现在我们假设：
+
+       章节1中出现的字为：Z1c1,Z1c2,Z1c3,Z1c4……Z1cn；它们在章节中的个数为：Z1n1,Z1n2,Z1n3……Z1nm；
+
+       章节2中出现的字为：Z2c1,Z2c2,Z2c3,Z2c4……Z2cn；它们在章节中的个数为：Z2n1,Z2n2,Z2n3……Z2nm；
+
+       其中，Z1c1和Z2c1表示两个文本中同一个字，Z1n1和Z2n1是它们分别对应的个数，
+
+       最后我们的相似度可以这么计算：
+
+       程序实现如下：（若有可优化或更好的实现请不吝赐教）
+       前言
+
+       设计一个缓存系统，不得不要考虑的问题就是：缓存穿透、缓存击穿与失效时的雪崩效应。
+       缓存穿透
+
+       缓存穿透是指查询一个一定不存在的数据，由于缓存是不命中时被动写的，并且出于容错考虑，如果从存储层查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到存储层去查询，失去了缓存的意义。在流量大时，可能DB就挂掉了，要是有人利用不存在的key频繁攻击我们的应用，这就是漏洞。
+       解决方案
+
+       有很多种方法可以有效地解决缓存穿透问题，最常见的则是采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的bitmap中，一个一定不存在的数据会被 这个bitmap拦截掉，从而避免了对底层存储系统的查询压力。另外也有一个更为简单粗暴的方法（我们采用的就是这种），如果一个查询返回的数据为空（不管是数 据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。
+       缓存雪崩
+
+       缓存雪崩是指在我们设置缓存时采用了相同的过期时间，导致缓存在某一时刻同时失效，请求全部转发到DB，DB瞬时压力过重雪崩。
+       解决方案
+
+       缓存失效时的雪崩效应对底层系统的冲击非常可怕。大多数系统设计者考虑用加锁或者队列的方式保证缓存的单线 程（进程）写，从而避免失效时大量的并发请求落到底层存储系统上。这里分享一个简单方案就时讲缓存失效时间分散开，比如我们可以在原有的失效时间基础上增加一个随机值，比如1-5分钟随机，这样每一个缓存的过期时间的重复率就会降低，就很难引发集体失效的事件。
+       缓存击穿
+
+       对于一些设置了过期时间的key，如果这些key可能会在某些时间点被超高并发地访问，是一种非常“热点”的数据。这个时候，需要考虑一个问题：缓存被“击穿”的问题，这个和缓存雪崩的区别在于这里针对某一key缓存，前者则是很多key。
+
+       缓存在某个时间点过期的时候，恰好在这个时间点对这个Key有大量的并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把后端DB压垮。
+       解决方案
+       1.使用互斥锁(mutex key)
+
+       业界比较常用的做法，是使用mutex。简单地来说，就是在缓存失效的时候（判断拿出来的值为空），不是立即去load db，而是先使用缓存工具的某些带成功操作返回值的操作（比如Redis的SETNX或者Memcache的ADD）去set一个mutex key，当操作返回成功时，再进行load db的操作并回设缓存；否则，就重试整个get缓存的方法。
+
+       SETNX，是「SET if Not eXists」的缩写，也就是只有不存在的时候才设置，可以利用它来实现锁的效果。在redis2.6.1之前版本未实现setnx的过期时间，所以这里给出两种版本代码参考：
+
+       [java] view plain copy
+
+           //2.6.1前单机版本锁
+           String get(String key) {
+              String value = redis.get(key);
+              if (value  == null) {
+               if (redis.setnx(key_mutex, "1")) {
+                   // 3 min timeout to avoid mutex holder crash
+                   redis.expire(key_mutex, 3 * 60)
+                   value = db.get(key);
+                   redis.set(key, value);
+                   redis.delete(key_mutex);
+               } else {
+                   //其他线程休息50毫秒后重试
+                   Thread.sleep(50);
+                   get(key);
+               }
+             }
+           }
+
+       最新版本代码：
+
+       [java] view plain copy
+
+           public String get(key) {
+                 String value = redis.get(key);
+                 if (value == null) { //代表缓存值过期
+                     //设置3min的超时，防止del操作失败的时候，下次缓存过期一直不能load db
+                     if (redis.setnx(key_mutex, 1, 3 * 60) == 1) {  //代表设置成功
+                          value = db.get(key);
+                                 redis.set(key, value, expire_secs);
+                                 redis.del(key_mutex);
+                         } else {  //这个时候代表同时候的其他线程已经load db并回设到缓存了，这时候重试获取缓存值即可
+                                 sleep(50);
+                                 get(key);  //重试
+                         }
+                     } else {
+                         return value;
+                     }
+            }
+
+       memcache代码：
+
+       [java] view plain copy
+
+           if (memcache.get(key) == null) {
+               // 3 min timeout to avoid mutex holder crash
+               if (memcache.add(key_mutex, 3 * 60 * 1000) == true) {
+                   value = db.get(key);
+                   memcache.set(key, value);
+                   memcache.delete(key_mutex);
+               } else {
+                   sleep(50);
+                   retry();
+               }
+           }
+
+       2. "提前"使用互斥锁(mutex key)：
+
+       在value内部设置1个超时值(timeout1), timeout1比实际的memcache timeout(timeout2)小。当从cache读取到timeout1发现它已经过期时候，马上延长timeout1并重新设置到cache。然后再从数据库加载数据并设置到cache中。伪代码如下：
+
+       [java] view plain copy
+
+           v = memcache.get(key);
+           if (v == null) {
+               if (memcache.add(key_mutex, 3 * 60 * 1000) == true) {
+                   value = db.get(key);
+                   memcache.set(key, value);
+                   memcache.delete(key_mutex);
+               } else {
+                   sleep(50);
+                   retry();
+               }
+           } else {
+               if (v.timeout <= now()) {
+                   if (memcache.add(key_mutex, 3 * 60 * 1000) == true) {
+                       // extend the timeout for other threads
+                       v.timeout += 3 * 60 * 1000;
+                       memcache.set(key, v, KEY_TIMEOUT * 2);
+
+                       // load the latest value from db
+                       v = db.get(key);
+                       v.timeout = KEY_TIMEOUT;
+                       memcache.set(key, value, KEY_TIMEOUT * 2);
+                       memcache.delete(key_mutex);
+                   } else {
+                       sleep(50);
+                       retry();
+                   }
+               }
+           }
+
+       3. "永远不过期"：
+
+       这里的“永远不过期”包含两层意思：
+
+           (1) 从redis上看，确实没有设置过期时间，这就保证了，不会出现热点key过期问题，也就是“物理”不过期。
+
+           (2) 从功能上看，如果不过期，那不就成静态的了吗？所以我们把过期时间存在key对应的value里，如果发现要过期了，通过一个后台的异步线程进行缓存的构建，也就是“逻辑”过期
+
+               从实战看，这种方法对于性能非常友好，唯一不足的就是构建缓存时候，其余线程(非构建缓存的线程)可能访问的是老数据，但是对于一般的互联网功能来说这个还是可以忍受。
+
+       [java] view plain copy
+
+           String get(final String key) {
+                   V v = redis.get(key);
+                   String value = v.getValue();
+                   long timeout = v.getTimeout();
+                   if (v.timeout <= System.currentTimeMillis()) {
+                       // 异步更新后台异常执行
+                       threadPool.execute(new Runnable() {
+                           public void run() {
+                               String keyMutex = "mutex:" + key;
+                               if (redis.setnx(keyMutex, "1")) {
+                                   // 3 min timeout to avoid mutex holder crash
+                                   redis.expire(keyMutex, 3 * 60);
+                                   String dbValue = db.get(key);
+                                   redis.set(key, dbValue);
+                                   redis.delete(keyMutex);
+                               }
+                           }
+                       });
+                   }
+                   return value;
+           }
+
+       4. 资源保护：
+
+       采用netflix的hystrix，可以做资源的隔离保护主线程池，如果把这个应用到缓存的构建也未尝不可。
+
+       四种解决方案：没有最佳只有最合适
+
+
+       解决方案
+       优点
+       缺点
+
+       简单分布式互斥锁（mutex key）
+
+
+        1. 思路简单
+
+
+       2. 保证一致性
+
+
+
+
+       1. 代码复杂度增大
+
+
+       2. 存在死锁的风险
+
+
+       3. 存在线程池阻塞的风险
+
+
+       “提前”使用互斥锁
+        1. 保证一致性
+       同上
+
+       不过期(本文)
+
+
+       1. 异步构建缓存，不会阻塞线程池
+
+
+
+
+       1. 不保证一致性。
+
+
+       2. 代码复杂度增大(每个value都要维护一个timekey)。
+
+
+       3. 占用一定的内存空间(每个value都要维护一个timekey)。
+
+
+       资源隔离组件hystrix(本文)
+
+
+       1. hystrix技术成熟，有效保证后端。
+
+
+       2. hystrix监控强大。
+
+
+
+
+
+
+
+
+
+
+       1. 部分访问存在降级策略。
+
+
+
+
+
+       四种方案来源网络，详文请链接：http://carlosfu.iteye.com/blog/2269687?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+
+       总结
+
+       针对业务系统，永远都是具体情况具体分析，没有最好，只有最合适。
+
+       最后，对于缓存系统常见的缓存满了和数据丢失问题，需要根据具体业务分析，通常我们采用LRU策略处理溢出，Redis的RDB和AOF持久化策略来保证一定情况下的数据安全。
+
+
+public class CosineSimilarAlgorithm {
+	public static double getSimilarity(String doc1, String doc2) {
+		if (doc1 != null && doc1.trim().length() > 0 && doc2 != null
+				&& doc2.trim().length() > 0) {
+
+			Map<Integer, int[]> AlgorithmMap = new HashMap<Integer, int[]>();
+
+			//将两个字符串中的中文字符以及出现的总数封装到，AlgorithmMap中
+			for (int i = 0; i < doc1.length(); i++) {
+				char d1 = doc1.charAt(i);
+				if(isHanZi(d1)){
+					int charIndex = getGB2312Id(d1);
+					if(charIndex != -1){
+						int[] fq = AlgorithmMap.get(charIndex);
+						if(fq != null && fq.length == 2){
+							fq[0]++;
+						}else {
+							fq = new int[2];
+							fq[0] = 1;
+							fq[1] = 0;
+							AlgorithmMap.put(charIndex, fq);
+						}
+					}
+				}
+			}
+
+			for (int i = 0; i < doc2.length(); i++) {
+				char d2 = doc2.charAt(i);
+				if(isHanZi(d2)){
+					int charIndex = getGB2312Id(d2);
+					if(charIndex != -1){
+						int[] fq = AlgorithmMap.get(charIndex);
+						if(fq != null && fq.length == 2){
+							fq[1]++;
+						}else {
+							fq = new int[2];
+							fq[0] = 0;
+							fq[1] = 1;
+							AlgorithmMap.put(charIndex, fq);
+						}
+					}
+				}
+			}
+
+			Iterator<Integer> iterator = AlgorithmMap.keySet().iterator();
+			double sqdoc1 = 0;
+			double sqdoc2 = 0;
+			double denominator = 0;
+			while(iterator.hasNext()){
+				int[] c = AlgorithmMap.get(iterator.next());
+				denominator += c[0]*c[1];
+				sqdoc1 += c[0]*c[0];
+				sqdoc2 += c[1]*c[1];
+			}
+
+			return denominator / Math.sqrt(sqdoc1*sqdoc2);
+		} else {
+			throw new NullPointerException(
+					" the Document is null or have not cahrs!!");
+		}
+	}
+
+	public static boolean isHanZi(char ch) {
+		// 判断是否汉字
+		return (ch >= 0x4E00 && ch <= 0x9FA5);
+
+	}
+
+	/**
+	 * 根据输入的Unicode字符，获取它的GB2312编码或者ascii编码，
+	 *
+	 * @param ch
+	 *            输入的GB2312中文字符或者ASCII字符(128个)
+	 * @return ch在GB2312中的位置，-1表示该字符不认识
+	 */
+	public static short getGB2312Id(char ch) {
+		try {
+			byte[] buffer = Character.toString(ch).getBytes("GB2312");
+			if (buffer.length != 2) {
+				// 正常情况下buffer应该是两个字节，否则说明ch不属于GB2312编码，故返回'?'，此时说明不认识该字符
+				return -1;
+			}
+			int b0 = (int) (buffer[0] & 0x0FF) - 161; // 编码从A1开始，因此减去0xA1=161
+			int b1 = (int) (buffer[1] & 0x0FF) - 161; // 第一个字符和最后一个字符没有汉字，因此每个区只收16*6-2=94个汉字
+			return (short) (b0 * 94 + b1);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+}
+       程序中做了两小的改进，以加快效率：
+       1. 只将汉字作为向量，其他的如标点，数字等符号不处理；2. 在HashMap中存放汉字和其在文本中对于的个数时，先将单个汉字通过GB2312编码转换成数字，再存放。
+
+       最后写了个测试，根据两种不同的算法对比下时间，下面是测试结果：
+
+       余弦定理算法：doc1 与 doc2 相似度为：0.9954971, 耗时：22mm
+
+       距离编辑算法：doc1 与 doc2 相似度为：0.99425095, 耗时：322mm
+
+       可见效率有明显提高，算法复杂度大致为：document1.length + document2.length。
+
+       原创blog，转载请注明http://my.oschina.net/BreathL/blog/42477
