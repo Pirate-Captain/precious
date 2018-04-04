@@ -130,6 +130,7 @@
         <nekohtml.version>1.9.14</nekohtml.version>
         <xercesImpl.version>2.11.0</xercesImpl.version>
         <xml-apis.version>1.4.01</xml-apis.version>
+        <hanlp.version>portable-1.5.4</hanlp.version>
     </properties>
 
     <profiles>
