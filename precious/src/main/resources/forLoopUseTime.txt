@@ -1,0 +1,92 @@
+option = {
+    title: {
+        text: 'for循环耗时'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['最常用的循环','最常用的循环1','iterator循环','增强for循环','jdk8foreach', 'jdk8forEachRemaining']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [#dataNumbers#]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'最常用的循环',
+            type:'line',
+            itemStyle: {
+                normal: {
+                    color: '#a8bcd4'
+                }
+            },
+            data:[#method1#]
+        },
+        {
+            name:'最常用的循环1',
+            type:'line',
+            itemStyle: {
+                normal: {
+                    color: '#f88c54'
+                }
+            },
+            data:[#method2#]
+        },
+        {
+            name:'iterator循环',
+            type:'line',
+            itemStyle: {
+                normal: {
+                    color: '#488c54'
+                }
+            },
+            data:[#method3#]
+        },
+        {
+            name:'增强for循环',
+            type:'line',
+            itemStyle: {
+                    normal: {
+                        color: '#f82c54'
+                    }
+                },
+            data:[#method4#]
+        },
+        {
+            name:'jdk8foreach',
+            type:'line',
+            itemStyle: {
+                normal: {
+                    color: '#f1cc04'
+                }
+            },
+            data:[#method5#]
+        },
+        {
+            name:'jdk8forEachRemaining',
+            type:'line',
+            itemStyle: {
+                normal: {
+                    color: '#000000'
+                }
+            },
+            data:[#method6#]
+        }
+    ]
+};
