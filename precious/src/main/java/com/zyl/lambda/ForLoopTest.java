@@ -29,8 +29,8 @@ public class ForLoopTest {
     private static final long DIVIC_NUMBER = 1;
 
     public static void main(String[] args) throws IOException {
-        int[] numbers = new int[100];
-        int interval = 1000;
+        int[] numbers = new int[1000];
+        int interval = 10;
         for ( int i =0; i <numbers.length; i++) {
             numbers[i] = interval * (i + 1);
         }
