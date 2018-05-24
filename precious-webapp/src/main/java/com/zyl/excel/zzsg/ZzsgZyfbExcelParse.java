@@ -1,4 +1,4 @@
-/**
+/*
  * Created on 2016-4-26
  */
 package com.zyl.excel.zzsg;
@@ -8,9 +8,10 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import java.util.Map.Entry;
 import java.util.Vector;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
  * @version $Id$
  */
 public class ZzsgZyfbExcelParse {
@@ -31,31 +32,33 @@ public class ZzsgZyfbExcelParse {
     private static int currentCode = 0;
     private static int zyCount = 0;
     private static int multiZy = 0;
-    private static Map<String, String> provMap = new LinkedHashMap<String, String>();
-    private static Map<String, List<String>> replaceOldZyMap = new LinkedHashMap<String, List<String>>();
-    private static Map<String, List<String>> addNewZyMap = new LinkedHashMap<String, List<String>>();
+    private static Map<String, String> provMap = new LinkedHashMap<String, String>(34);
+    //    private static Map<String, List<String>> replaceOldZyMap = new LinkedHashMap<String, List<String>>(3);
+//    private static Map<String, List<String>> addNewZyMap = new LinkedHashMap<String, List<String>>(10);
+    private static final String FILE_PATH = "D:\\logs\\zbbm\\zzsg\\2018\\zzsgzy.xlsx";
+    private static final String ZYFB_FILE_PATH = "D:\\logs\\zbbm\\zzsg\\2018\\zzsgzy-fb.xls";
 
     public static void main(String[] args) {
         new ZzsgZyfbExcelParse().parse();
     }
 
-    public void parse() {
-        HSSFWorkbook book = null;
+    private void parse() {
+        Workbook book = null;
         try {
-            book = new HSSFWorkbook(new FileInputStream("e:/zzsgzyfb.xls"));
-            HSSFSheet sheet = book.getSheetAt(0);
+            book = ZzsgZyfbUtil.getWorkbook(FILE_PATH);
+            Sheet sheet = book.getSheetAt(0);
             int rows = sheet.getPhysicalNumberOfRows();
             int colNumbers = sheet.getRow(0).getPhysicalNumberOfCells();
-            Map<String, ZyInfo> zyInfoMap = new LinkedHashMap<String, ZyInfo>();
+            Map<String, ZyInfo> zyInfoMap = new LinkedHashMap<String, ZyInfo>(200);
             ZyInfo zyInfo = new ZyInfo();
             zyInfo.setZyCode("zydm");
             zyInfo.setZyName("zymc");
 
             List<String> ssList = new ArrayList<String>();
-            Map<String, String> ssBkMap = new LinkedHashMap<String, String>();
+            Map<String, String> ssBkMap = new LinkedHashMap<String, String>(200);
             ssBkMap.putAll(provMap);
             for ( int index = 3; index < colNumbers; index++ ) {
-                String ssDm = StringUtils.trim(getValue(sheet.getRow(0).getCell(index)));
+                String ssDm = StringUtils.trim(ZzsgZyfbUtil.getValue(sheet.getRow(0).getCell(index)));
                 ssList.add(provMap.get(ssDm));
                 ssBkMap.remove(ssDm);
                 zyInfo.setZyfbList(ssList);
@@ -66,13 +69,13 @@ public class ZzsgZyfbExcelParse {
             }
 
             for ( int i = 1; i < rows; i++ ) {
-                String zkZy = StringUtils.trim(getValue(sheet.getRow(i).getCell(1)));
-                String bkZy = StringUtils.trim(getValue(sheet.getRow(i).getCell(2)));
+                String zkZy = StringUtils.trim(ZzsgZyfbUtil.getValue(sheet.getRow(i).getCell(1)));
+                String bkZy = StringUtils.trim(ZzsgZyfbUtil.getValue(sheet.getRow(i).getCell(2)));
                 List<String> zyNameList = getZyNameList(zkZy, bkZy);
 
                 List<String> ssfbList = new ArrayList<String>();
                 for ( int j = 3; j < colNumbers; j++ ) {
-                    ssfbList.add(StringUtils.trim(getValue(sheet.getRow(i).getCell(j))));
+                    ssfbList.add(StringUtils.trim(ZzsgZyfbUtil.getValue(sheet.getRow(i).getCell(j))));
                 }
 
                 addToMap(zyNameList, ssfbList, zyInfoMap);
@@ -86,10 +89,6 @@ public class ZzsgZyfbExcelParse {
             System.out.println(zyCount);
             System.out.println(multiZy);
             writeExcel(zyfbList);
-        } catch ( FileNotFoundException e ) {
-            e.printStackTrace();
-        } catch ( IOException e ) {
-            e.printStackTrace();
         } finally {
             try {
                 book.close();
@@ -99,11 +98,11 @@ public class ZzsgZyfbExcelParse {
         }
     }
 
-    public void writeExcel(List<ZyInfo> zyInfoList) {
+    private void writeExcel(List<ZyInfo> zyInfoList) {
         if ( null == zyInfoList || zyInfoList.size() == 0 ) {
             return;
         }
-        HSSFWorkbook book = null;
+        HSSFWorkbook book;
         book = new HSSFWorkbook();
         HSSFSheet sheet = book.createSheet();
 
@@ -120,7 +119,7 @@ public class ZzsgZyfbExcelParse {
             zyCodeCell.setCellValue(cellInfo.getZyName());
 
             int indexTmp = 1;
-            for ( int f=0; f < cellInfo.getZyfbList().size(); f++ ) {
+            for ( int f = 0; f < cellInfo.getZyfbList().size(); f++ ) {
                 String cellValue = cellInfo.getZyfbList().get(f);
                 HSSFCell cell = row.createCell(++indexTmp);
                 cell.setCellType(HSSFCell.CELL_TYPE_STRING);
@@ -130,15 +129,15 @@ public class ZzsgZyfbExcelParse {
         }
 
         try {
-            book.write(new FileOutputStream(new File("e:/zzsgzyfb-fb.xls")));
-        } catch (FileNotFoundException e) {
+            book.write(new FileOutputStream(new File(ZYFB_FILE_PATH)));
+        } catch ( FileNotFoundException e ) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch ( IOException e ) {
             e.printStackTrace();
         } finally {
             try {
                 book.close();
-            } catch (IOException e) {
+            } catch ( IOException e ) {
                 e.printStackTrace();
             }
         }
@@ -155,7 +154,7 @@ public class ZzsgZyfbExcelParse {
                 zyInfo.setZyCode(getZyCode());
                 zyInfo.setZyName(zyName);
                 List<String> ssfbTmpList = new ArrayList<String>();
-                for ( int i=0; i<ssfbList.size(); i++ ) {
+                for ( int i = 0; i < ssfbList.size(); i++ ) {
                     ssfbTmpList.add("");
                 }
                 zyInfo.setZyfbList(ssfbTmpList);
@@ -165,7 +164,7 @@ public class ZzsgZyfbExcelParse {
                 System.out.println("重复的专业：" + zyName);
             }
 
-            for ( int m=0; m<ssfbList.size(); m++ ) {
+            for ( int m = 0; m < ssfbList.size(); m++ ) {
                 String fbInfo = ssfbList.get(m);
                 if ( StringUtils.isNotBlank(fbInfo) ) {
                     String zyInfoFb = zyInfo.getZyfbList().get(m);
@@ -179,12 +178,9 @@ public class ZzsgZyfbExcelParse {
 
     private String getZyCode() {
         String currentCodeStr = String.valueOf(currentCode);
-        int zeroLength = 5-currentCodeStr.length();
-        for ( int i=0; i<zeroLength; i++ ) {
-            currentCodeStr = "0" + currentCodeStr;
-        }
+        currentCodeStr = StringUtils.leftPad(currentCodeStr, 5, "0");
         currentCode++;
-        return PRE_ZY_CODE+currentCodeStr;
+        return PRE_ZY_CODE + currentCodeStr;
     }
 
     private List<String> getZyNameList(String zkZy, String bkZy) {
@@ -220,19 +216,6 @@ public class ZzsgZyfbExcelParse {
 //        }
         zyCount += zyNameVector.size();
         return zyNameVector.subList(0, zyNameVector.size());
-    }
-
-    private static String getValue(HSSFCell hssfCell) {
-        if ( hssfCell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN ) {
-            // 返回布尔类型的值
-            return String.valueOf(hssfCell.getBooleanCellValue());
-        } else if ( hssfCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC ) {
-            // 返回数值类型的值
-            return String.valueOf(((Double) hssfCell.getNumericCellValue()).intValue());
-        } else {
-            // 返回字符串类型的值
-            return String.valueOf(hssfCell.getStringCellValue());
-        }
     }
 
     public class ZyInfo {

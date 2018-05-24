@@ -4,6 +4,7 @@
  */
 package com.zyl.lambda;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +21,25 @@ public class StreamTest {
 
         List<String> originalList = Arrays.asList("a", "b", "c", "a", "d");
 
-        List<String> resultList = originalList.stream().filter("a"::equals).distinct().collect(Collectors.toList());
+        List<String> resultList = originalList.stream().filter("z"::equals).distinct().collect(Collectors.toList());
+        System.out.println(resultList.size());
         resultList.forEach(System.out::println);
+        System.out.println(originalList.size());
+
+        System.out.println(originalList.stream().filter("m"::equals).findFirst().orElse(null));
+
+        List<String> emptyList = new ArrayList<>();
+        emptyList.sort(String::compareTo);
+
+        List<PersonInfo> personalInfoList = new ArrayList<>();
+        List<PersonInfo> tmpPersonalInfoList = new ArrayList<>();
+        tmpPersonalInfoList.addAll(personalInfoList);
+        System.out.println(tmpPersonalInfoList.size());
+        for ( PersonInfo personInfo : personalInfoList ) {
+            System.out.println(personInfo.getAge());
+        }
+
+        String[] pinYin = new String[]{"chao", "chao", "zhao", "chao"};
+        System.out.println(Arrays.stream(pinYin).distinct().collect(Collectors.toList()).toArray(new String[0]).length);
     }
 }

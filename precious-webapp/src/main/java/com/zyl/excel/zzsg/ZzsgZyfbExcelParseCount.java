@@ -1,51 +1,43 @@
-/**
+/*
  * Created on 2016-4-26
  */
 package com.zyl.excel.zzsg;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
  * @version $Id$
  */
 public class ZzsgZyfbExcelParseCount {
     private static Map<String, String> zkMap = new HashMap<String, String>();
     private static Map<String, String> bkMap = new HashMap<String, String>();
-
+    private static final String FILE_PATH = "D:\\logs\\zbbm\\zzsg\\2018\\zzsgzy.xlsx";
 
     public static void main(String[] args) {
         new ZzsgZyfbExcelParseCount().parse();
     }
 
-    public void parse() {
-        HSSFWorkbook book = null;
+    private void parse() {
+        Workbook book = null;
         try {
-            book = new HSSFWorkbook(new FileInputStream("e:/zzsgzyfb.xls"));
-            HSSFSheet sheet = book.getSheetAt(0);
+            book = ZzsgZyfbUtil.getWorkbook(FILE_PATH);
+            Sheet sheet = book.getSheetAt(0);
             int rows = sheet.getPhysicalNumberOfRows();
             for ( int i=1; i< rows; i++ ) {
-                String zkZy = StringUtils.trim(getValue(sheet.getRow(i).getCell(1)));
+                String zkZy = StringUtils.trim(ZzsgZyfbUtil.getValue(sheet.getRow(i).getCell(1)));
                 parseZy(zkZy, zkMap);
-                String bkZy = StringUtils.trim(getValue(sheet.getRow(i).getCell(2)));
+                String bkZy = StringUtils.trim(ZzsgZyfbUtil.getValue(sheet.getRow(i).getCell(2)));
                 parseZy(bkZy, bkMap);
             }
             System.out.println("专科：" + zkMap.size());
             System.out.println("本科：" + bkMap.size());
-        } catch ( FileNotFoundException e ) {
-            e.printStackTrace();
-        } catch ( IOException e ) {
-            e.printStackTrace();
         } finally {
             try {
                 book.close();
@@ -61,19 +53,6 @@ public class ZzsgZyfbExcelParseCount {
             for ( String tmpName : zyNames ) {
                 zyMap.put(tmpName, tmpName);
             }
-        }
-    }
-
-    private static String getValue(HSSFCell hssfCell) {
-        if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {
-            // 返回布尔类型的值
-            return String.valueOf(hssfCell.getBooleanCellValue());
-        } else if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-            // 返回数值类型的值
-            return String.valueOf(((Double)hssfCell.getNumericCellValue()).intValue());
-        } else {
-            // 返回字符串类型的值
-            return String.valueOf(hssfCell.getStringCellValue());
         }
     }
 }
