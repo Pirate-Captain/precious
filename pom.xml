@@ -131,6 +131,7 @@
         <xercesImpl.version>2.11.0</xercesImpl.version>
         <xml-apis.version>1.4.01</xml-apis.version>
         <hanlp.version>portable-1.5.4</hanlp.version>
+        <pdfbox.version>2.0.4</pdfbox.version>
     </properties>
 
     <profiles>
