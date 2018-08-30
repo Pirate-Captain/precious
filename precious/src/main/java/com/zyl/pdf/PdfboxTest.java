@@ -15,7 +15,7 @@ import java.io.IOException;
  * @version $Id$
  */
 public class PdfboxTest {
-    private static final String PDF_PATH = "d:/logs/pdf/16653911057.pdf";
+    private static final String PDF_PATH = "d:/logs/pdf/cjd.pdf";
 
     public static void main(String[] args) throws IOException {
         try {
@@ -26,6 +26,7 @@ public class PdfboxTest {
             stripper.setSortByPosition(true);
             //获取内容
             System.out.println(stripper.getText(document));
+            document.close();
         } catch ( Exception e ) {
             e.printStackTrace();
         }
