@@ -1,10 +1,8 @@
-/**
+/*
  * chsi
  * Created on 2017-09-15
  */
 package com.zyl.sort.bigdata;
-
-import com.google.common.collect.LinkedHashMultiset;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,16 +17,16 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
  * @version $Id$
  */
 public class BigDataSort {
-    private static int dataCount = 50000000;
-    private static int dataSpliteCount = 50000;
+    private static final int DATA_COUNT = 50000000;
+    private static final int DATA_SPLITE_COUNT = 50000;
     private static String dataSourcePath = "d:/logs/sort/bigdata/source/source.txt";
     private static String spliteDataPath = "d:/logs/sort/bigdata/split";
     private static String splitDataFileName = spliteDataPath + "/big_data_%s.txt";
-    private static String sortedDataFileName = "d:/logs/sort/bigdata/result/sort.txt";
+    private static final String SORTED_DATA_FILE_NAME = "d:/logs/sort/bigdata/result/sort.txt";
 
     public static void main(String[] args) throws IOException {
         generateBigData();
@@ -49,8 +47,8 @@ public class BigDataSort {
         }
         BufferedWriter br = new BufferedWriter(new FileWriter(dataSourcePath));
         Random random = new Random();
-        for ( int i=0; i<dataCount; i++) {
-            br.write((random.nextInt(dataCount)) + "\r\n");
+        for ( int i = 0; i< DATA_COUNT; i++) {
+            br.write((random.nextInt(DATA_COUNT)) + "\r\n");
         }
         br.close();
     }
@@ -62,7 +60,7 @@ public class BigDataSort {
         List<Integer> dataList = new ArrayList<Integer>();
         while ( (line = br.readLine()) != null ) {
             dataList.add(Integer.parseInt(line));
-            if ( dataList.size() >= dataSpliteCount ) {
+            if ( dataList.size() >= DATA_SPLITE_COUNT ) {
 
                 writeSpliteFile(count++, dataList);
             }
@@ -81,11 +79,11 @@ public class BigDataSort {
             fileList.add(new FileInfo(tmpFile.getAbsolutePath()));
         }
 
-        File file = new File(sortedDataFileName);
+        File file = new File(SORTED_DATA_FILE_NAME);
         if ( !file.getParentFile().exists() ) {
             file.getParentFile().mkdirs();
         }
-        BufferedWriter bw = new BufferedWriter(new FileWriter(sortedDataFileName));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(SORTED_DATA_FILE_NAME));
         while ( !fileList.isEmpty() ) {
             Collections.sort(fileList);
             bw.write(fileList.get(0).getCurrentData() + "\r\n");

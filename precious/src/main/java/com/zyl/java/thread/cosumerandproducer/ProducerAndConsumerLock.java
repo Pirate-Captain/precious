@@ -26,7 +26,7 @@ public class ProducerAndConsumerLock {
 
     public static void main(String[] args) {
         ExecutorService executorService = new ThreadPoolExecutor(10, 10, 1, TimeUnit.HOURS, new LinkedBlockingDeque<>(10), Executors.defaultThreadFactory());
-        ProducerAndConsumerWaitNotify notify = new ProducerAndConsumerWaitNotify();
+        ProducerAndConsumerLock notify = new ProducerAndConsumerLock();
         for ( int index = 0; index < 10; index++ ) {
             if ( index % 4 == 0 ) {
                 executorService.submit(notify.new Producer("producer" + index));

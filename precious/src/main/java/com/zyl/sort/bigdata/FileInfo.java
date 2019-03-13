@@ -67,7 +67,7 @@ public class FileInfo implements Comparable<FileInfo> {
 
     @Override
     public int compareTo(FileInfo o) {
-        if ( this.currentData == o.getCurrentData() ) {
+        if ( !this.currentData.equals(o.getCurrentData()) ) {
             return this.currentData - o.getCurrentData();
         }
         return this.fileName.compareTo(o.getFileName());
