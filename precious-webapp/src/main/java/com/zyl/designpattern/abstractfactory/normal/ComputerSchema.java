@@ -8,7 +8,7 @@ import com.zyl.designpattern.abstractfactory.MainBord;
 
 /**
  * 这种抽象工厂模式不够灵活，因为如果要添加新的产品，就需要修改所有抽象工厂的子类
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public interface ComputerSchema {

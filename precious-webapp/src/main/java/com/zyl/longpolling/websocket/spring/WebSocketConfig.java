@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 //@Configuration

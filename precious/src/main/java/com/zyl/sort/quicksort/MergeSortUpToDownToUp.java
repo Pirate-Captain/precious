@@ -8,7 +8,7 @@ package com.zyl.sort.quicksort;
  * 归并排序（从上到下 再从下到上）
  * 先把整个数组打散，然后再归并
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class MergeSortUpToDownToUp extends AbstractSort {

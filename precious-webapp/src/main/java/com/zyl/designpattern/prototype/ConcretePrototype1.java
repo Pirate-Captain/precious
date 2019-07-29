@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 
  * 原型模式浅拷贝
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ConcretePrototype1 extends Prototype {

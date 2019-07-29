@@ -5,7 +5,7 @@ package com.zyl.designpattern.singleton;
 
 /**
  * 延迟加载模式（使用内部静态类来保证线程同步）
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class SingleTonLazyLoadModel {

@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class DiskClassLoader extends ClassLoader {

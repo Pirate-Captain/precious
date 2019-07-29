@@ -9,7 +9,7 @@ import com.zyl.designpattern.abstractfactory.GigabyteMainBord;
 import com.zyl.designpattern.abstractfactory.MainBord;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ComputerSchema2 implements ComputerSchema {

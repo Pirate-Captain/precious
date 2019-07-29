@@ -8,7 +8,7 @@ package com.zyl.innerclass;
  * 2.匿名内部类用 new Pet(){ … } 的方式把声明类的过程和创建类的实例的过程合二为一<br/>
  * 3.匿名内部类可以是某个类的继承子类也可以是某个接口的实现类
  * 4.匿名内部类不能有静态成员
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class AnonymousInnerClass {

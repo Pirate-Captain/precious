@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class DiskClassLoaderTest {
@@ -17,7 +17,7 @@ public class DiskClassLoaderTest {
     public static void main(String[] args) {
         DiskClassLoader diskClassLoader = new DiskClassLoader("d:/logs/classloader/");
         try {
-            Class testHello = diskClassLoader.loadClass("com.my.test.TestHello");
+            Class testHello = diskClassLoader.loadClass("com.zyl.classloader.TestHello");
             System.out.println(testHello.getClassLoader().toString());
             Object obj = testHello.newInstance();
             Method method = testHello.getDeclaredMethod("say", null);

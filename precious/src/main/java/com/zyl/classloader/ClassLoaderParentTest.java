@@ -6,7 +6,7 @@ package com.zyl.classloader;
 
 /**
  * 测试classLoader的parent
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ClassLoaderParentTest {

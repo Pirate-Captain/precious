@@ -5,7 +5,7 @@ package com.zyl.designpattern.builderpattern.change;
 
 /**
  * 生成器作为内部类放到产品类里
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class CustomerInfo {

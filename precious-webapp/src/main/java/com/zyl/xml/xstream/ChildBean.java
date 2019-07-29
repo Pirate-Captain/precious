@@ -7,7 +7,7 @@ package com.zyl.xml.xstream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 

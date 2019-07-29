@@ -9,7 +9,7 @@ package com.zyl.innerclass;
  * 3.内部类可以访问外部类的所有成员就想访问自己的成员一样没有限制<br/>
  * 4.内部类中的this指的是内部类的实例对象本身，如果要用外部类的实例对象就可以用类名.this的方式获得<br/>
  * 5.在外部类外部，必须先创建外部类实例，然后再创建内部类实例
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class CommonInnerClass {

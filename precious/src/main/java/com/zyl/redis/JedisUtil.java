@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  *  You can store the pool somewhere statically, it is thread-safe. 
  *  JedisPoolConfig includes a number of helpful Redis-specific connection pooling defaults. 
  *  For example, Jedis with JedisPoolConfig will close a connection after 300 seconds if it has not been returned.
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class JedisUtil {

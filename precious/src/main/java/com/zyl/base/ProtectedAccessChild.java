@@ -6,7 +6,7 @@ package com.zyl.base;
 
 /**
  * 3.父类引用指向与父类不在同一个包下的子类（与父类同一个包下的子类是可以的）不能访问父类的protected属性或方法
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ProtectedAccessChild extends ProtectedAccessParent {

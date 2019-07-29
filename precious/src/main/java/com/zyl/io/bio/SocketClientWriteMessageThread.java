@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class SocketClientWriteMessageThread implements Runnable {

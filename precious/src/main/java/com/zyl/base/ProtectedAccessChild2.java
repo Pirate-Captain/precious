@@ -8,7 +8,7 @@ package com.zyl.base;
  * protected的访问限制：
  * 5.子类中用同一个包下其他子类对象能访问父类protected属性或方法
  *
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ProtectedAccessChild2 extends ProtectedAccessParent {

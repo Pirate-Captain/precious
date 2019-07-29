@@ -14,7 +14,7 @@ import org.apache.zookeeper.ZooDefs.Ids;
 import org.junit.Test;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ZookeeperBaseApi {

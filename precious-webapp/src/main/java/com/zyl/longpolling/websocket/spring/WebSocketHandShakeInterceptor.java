@@ -12,7 +12,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 import java.util.Map;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class WebSocketHandShakeInterceptor extends HttpSessionHandshakeInterceptor {

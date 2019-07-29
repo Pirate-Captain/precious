@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class StreamTest {

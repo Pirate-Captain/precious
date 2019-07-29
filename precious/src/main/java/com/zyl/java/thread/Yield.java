@@ -10,7 +10,7 @@ package com.zyl.java.thread;
  * 其它具有相同优先级的线程就一定能获得执行权；也有可能是当前线程又进入到“运行状态”继续运行！
  * yield 不会释放锁住的资源，yield是Thread方法
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class Yield {

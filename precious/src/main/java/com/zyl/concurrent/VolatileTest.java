@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * 多线程的三个特性：原子性、可见性、有序性
  * volatile 能保证变量的可见性，但是不能保存原子性，如自增、自减操作。
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class VolatileTest {

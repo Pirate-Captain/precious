@@ -8,7 +8,7 @@ package com.zyl.java.thread;
  * 线程实例的方法join()方法可以使得一个线程在另一个线程结束后再执行。如果join()方法在一个线程实例上调用，
  * 当前运行着的线程将阻塞直到这个线程实例完成了执行,join是Thread的非静态方法
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class Join {

@@ -12,7 +12,7 @@ package com.zyl.java.thread;
  * <p>
  * notify与wait只能使用在synchronized代码中，必须获取对象锁，才能运行（并且要放到循环中，可以参悟 {@link com.zyl.java.thread.cosumerandproducer.ProducerAndConsumerWaitNotify}）
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class WaitAndNotify {

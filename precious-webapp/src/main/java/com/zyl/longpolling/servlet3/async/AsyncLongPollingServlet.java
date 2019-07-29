@@ -18,7 +18,7 @@ import java.io.IOException;
  * 2.需要创建一个AsyncListener 监听任务执行情况
  * 3.需要创建一个业务的线程，执行业务功能，并将结果返回，最后需要执行asyncContext.complete()结束本次任务
  *
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 @WebServlet(asyncSupported = true, urlPatterns = "/asyncsevlt.do", loadOnStartup = 1)

@@ -1,6 +1,6 @@
 /*
  * chsi
- * Created on 2018-02-26
+ * Created on 2019-07-29
  */
 package com.zyl.classloader;
 
@@ -8,7 +8,7 @@ package com.zyl.classloader;
  * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
-public class Test {
+public class TestHello {
     public void say() {
         System.out.println("hello world");
     }

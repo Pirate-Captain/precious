@@ -5,7 +5,7 @@ package com.zyl.designpattern.iterator;
 
 /**
  * 不是线程安全的
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ConcreteArrayIterator<T> implements Iterator<T> {

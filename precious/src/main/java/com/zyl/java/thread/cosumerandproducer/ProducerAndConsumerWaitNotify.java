@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * wait一定要放到synchronized中的while循环中，不然会导致预想不到的问题
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class ProducerAndConsumerWaitNotify {

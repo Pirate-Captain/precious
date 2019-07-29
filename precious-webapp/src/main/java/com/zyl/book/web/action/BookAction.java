@@ -20,7 +20,7 @@ import com.zyl.metrics.util.MetricsUtils;
 import com.zyl.service.BookService;
 
 /**
- * @author zhuyl<a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 //定义返回 success 时重定向到 book Action
