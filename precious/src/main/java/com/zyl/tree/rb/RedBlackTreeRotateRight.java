@@ -7,7 +7,7 @@ package com.zyl.tree.rb;
 /**
  * 红黑树，右旋转
  *
- * @author zhuyl <a href="mailto:zhuyl@chsi.com.cn">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class RedBlackTreeRotateRight {
