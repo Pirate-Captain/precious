@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 /**
- * @author zhuyl <a href="mailto:zhuyouliangcn@gmail.com">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class HtmlParserUtil {

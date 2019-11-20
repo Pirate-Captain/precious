@@ -5,7 +5,7 @@
 package com.zyl.image.html2image;
 
 /**
- * @author zhuyl <a href="mailto:zhuyouliangcn@gmail.com">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class HtmlParserConfigeruation {
