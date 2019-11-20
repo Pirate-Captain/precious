@@ -4,13 +4,20 @@
  */
 package com.zyl.pdf;
 
+import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -19,7 +26,7 @@ import java.util.Calendar;
  * @version $Id$
  */
 public class PdfboxTest {
-    private static final String PDF_PATH = "d:/logs/pdf/nullmodify.pdf";
+    private static final String PDF_PATH = "d:/logs/pdf/wyw.pdf";
 
     public static void main(String[] args) {
         try {
@@ -49,6 +56,19 @@ public class PdfboxTest {
             System.out.println("Trapped=" + info.getTrapped());
             if (metadata != null) {
                 System.out.println("Metadata=" + metadata.getCOSObject());
+            }
+
+            PDPage page = document.getPage(0);
+            PDResources resources = page.getResources();
+            Iterable<COSName> objectNames = resources.getXObjectNames();
+            for (COSName imageObjectName : objectNames) {
+                if (page.getResources().isImageXObject(imageObjectName)) {
+                    PDImageXObject pdImagexObject = (PDImageXObject) page.getResources().getXObject(imageObjectName);
+                    BufferedImage bufferImage = pdImagexObject.getImage();
+                    FileOutputStream fos = new FileOutputStream("d:/logs/pdf/img/" + Calendar.getInstance().getTimeInMillis() + ".jpg");
+                    ImageIO.write(bufferImage, pdImagexObject.getSuffix(), fos);
+
+                }
             }
 
             document.close();
