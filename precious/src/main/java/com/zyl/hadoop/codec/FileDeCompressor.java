@@ -18,7 +18,7 @@ import org.apache.hadoop.io.compress.CompressionCodecFactory;
 
 /**
  * 数据解压缩
- * @author zhuyl<a href="mailto:472130873@qq.com">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class FileDeCompressor {

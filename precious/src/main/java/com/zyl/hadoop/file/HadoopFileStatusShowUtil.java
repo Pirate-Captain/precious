@@ -6,7 +6,7 @@ package com.zyl.hadoop.file;
 import org.apache.hadoop.fs.FileStatus;
 
 /**
- * @author zhuyl<a href="mailto:472130873@qq.com">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class HadoopFileStatusShowUtil {

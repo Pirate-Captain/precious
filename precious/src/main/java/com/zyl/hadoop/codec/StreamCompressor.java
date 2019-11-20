@@ -13,7 +13,7 @@ import org.apache.hadoop.util.ReflectionUtils;
 
 /**
  * 数据压缩
- * @author zhuyl<a href="mailto:472130873@qq.com">zhu Youliang</a>
+ * @author iaskbear <a href="mailto:iaskbear@gmail.com">iaskbear</a>
  * @version $Id$
  */
 public class StreamCompressor {
