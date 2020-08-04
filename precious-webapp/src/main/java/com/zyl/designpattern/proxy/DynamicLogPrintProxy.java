@@ -1,4 +1,4 @@
-/**
+/*
  * Created on 2016-4-20
  */
 package com.zyl.designpattern.proxy;
@@ -20,7 +20,7 @@ public class DynamicLogPrintProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("Dynamic proxy do something before invoke");
-//        Object result = method.invoke(logPrint, args); 如果这样调用会陷入死循环
+//        Object result = method.invoke(proxy, args); 如果这样调用会陷入死循环
         Object result = method.invoke(logPrint, args);
         System.out.println("Dynamic proxy do something after invoke");
         return result;

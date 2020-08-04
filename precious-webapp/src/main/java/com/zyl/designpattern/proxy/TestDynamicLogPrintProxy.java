@@ -14,7 +14,8 @@ public class TestDynamicLogPrintProxy {
     public static void main(String[] args) {
         LogPrint logPrint = new LogPrintImpl();
         InvocationHandler handler = new DynamicLogPrintProxy(logPrint);
-        
+
+        System.getProperties().setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
         LogPrint proxyObject = (LogPrint)Proxy.newProxyInstance(logPrint.getClass().getClassLoader(), logPrint.getClass().getInterfaces(), handler);
         proxyObject.printLogInfo("I am dyncmic log print proxy");
     }
