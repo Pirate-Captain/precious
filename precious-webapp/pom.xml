@@ -273,6 +273,11 @@
             <version>${javax.websocket-api.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv-platform</artifactId>
+            <version>${javacv-platform.version}</version>
+        </dependency>
+        <dependency>
             <groupId>oracle</groupId>
             <artifactId>ojdbc14</artifactId>
             <version>10</version>
